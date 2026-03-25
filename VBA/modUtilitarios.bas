@@ -250,3 +250,34 @@ End Function
 Function ValidarDatasOS(dataAbertura As Date, dataFechamento As Date) As Boolean
     ValidarDatasOS = (dataFechamento >= dataAbertura)
 End Function
+
+'Itens Ordem de serviço
+
+Function ValidarTipoItem(tipo As String) As Boolean
+    Select Case Trim(tipo)
+        Case "Serviço", "Peça"
+            ValidarTipoItem = True
+        Case Else
+            ValidarTipoItem = False
+    End Select
+End Function
+
+
+Function ValidarQtd(qtd As Double) As Boolean
+    ValidarQtd = (qtd > 0)
+End Function
+
+
+Function ValidarDescricaoItem(descricao As String) As Boolean
+    ValidarDescricaoItem = (Len(Trim(descricao)) >= 3)
+End Function
+
+
+Function ValidarValorUnit(valor As Double) As Boolean
+    ValidarValorUnit = (valor > 0)
+End Function
+
+
+Function CalcularTotalItem(qtd As Double, valorUnit As Double) As Double
+    CalcularTotalItem = qtd * valorUnit
+End Function
