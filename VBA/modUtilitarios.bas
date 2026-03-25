@@ -234,3 +234,19 @@ End Function
 Function ValidarCor(cor As String) As Boolean
     ValidarCor = (Len(Trim(cor)) >= 2)
 End Function
+
+'Ordem de serviço
+
+Function ValidarStatusOS(status As String) As Boolean
+    Select Case Trim(status)
+        Case "Aberta", "Em Andamento", "Concluída", "Cancelada"
+            ValidarStatusOS = True
+        Case Else
+            ValidarStatusOS = False
+    End Select
+End Function
+
+
+Function ValidarDatasOS(dataAbertura As Date, dataFechamento As Date) As Boolean
+    ValidarDatasOS = (dataFechamento >= dataAbertura)
+End Function
