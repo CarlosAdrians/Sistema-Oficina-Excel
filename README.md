@@ -31,7 +31,7 @@ Automatizar e organizar o fluxo da oficina, permitindo:
 
 O sistema foi estruturado seguindo princípios de organização semelhantes a aplicações reais:
 
-* Separação por módulos (Clientes, Veículos, Utilitários)
+* Separação por módulos (Clientes, Veículos, OS, Itens, Pagamentos e Utilitários)
 * Funções reutilizáveis
 * Validações centralizadas
 * Uso de tabelas como banco de dados (ListObject)
@@ -96,42 +96,42 @@ DATA_PAGAMENTO | FORMA | STATUS_PAGAMENTO
 
 ### 👤 Gestão de Clientes
 
-* Cadastro com validação completa
-* CPF ou CNPJ (nunca ambos)
+* Busca por ID e documento
+* Sanitização de CPF/CNPJ (remoção de caracteres)
+* Validação de CPF
 * Verificação de duplicidade
-* Sanitização de dados (remoção de máscara)
 
 ---
 
 ### 🚗 Gestão de Veículos
 
-* Cadastro vinculado ao cliente
-* Controle por ID (chave estrangeira)
-* Informações detalhadas do veículo
+* Busca por ID
+* Busca por placa (normalizada: sem hífen e em maiúsculo)
+* Vinculação com cliente
 
 ---
 
 ### 📋 Ordem de Serviço
 
-* Abertura e fechamento de OS
-* Vinculação com cliente e veículo
+* Criação de OS com validação de cliente e veículo
+* Busca por ID
 * Controle de status
+* Bloqueio de operações inválidas
 
 ---
 
 ### 🧾 Itens de Serviço
 
-* Registro de peças e serviços
-* Quantidade, valor unitário e total
+* Adição de itens à OS
+* Validação da existência da OS
+* Bloqueio de edição em OS finalizada ou cancelada
 
 ---
 
 ### 💰 Pagamentos
 
-* Controle de valores totais
-* Registro de adiantamento
-* Cálculo de valor restante
-* Status do pagamento
+* Registro de pagamentos vinculados à OS
+* Consulta por ID e por OS
 
 ---
 
@@ -142,18 +142,18 @@ DATA_PAGAMENTO | FORMA | STATUS_PAGAMENTO
   * CPF
   * CNPJ
   * Telefone
+  * Placa
 
 * Validação de:
 
-  * Nome (obrigatório e tamanho mínimo)
-  * CPF (11 dígitos)
-  * CNPJ (14 dígitos)
-  * Telefone (10 ou 11 dígitos)
-  * Endereço obrigatório
+  * CPF (estrutura e dígitos verificadores)
+  * Existência de cliente e veículo antes de criar OS
 
-* Regra de negócio:
+* Regras de negócio:
 
-  * Cliente deve possuir **CPF ou CNPJ (exclusivamente um)**
+  * Não é possível criar OS sem cliente ou veículo válido
+  * Não é possível adicionar itens em OS finalizada ou cancelada
+  * IDs são gerados automaticamente com base nas tabelas
 
 ---
 
@@ -165,6 +165,9 @@ DATA_PAGAMENTO | FORMA | STATUS_PAGAMENTO
 ├── 📁 vba
 │   ├── modClientes.bas
 │   ├── modVeiculos.bas
+│   ├── modOS.bas
+│   ├── modItensOS.bas
+│   ├── modPagamentos.bas
 │   ├── modUtilitarios.bas
 │
 ├── Sistema_Oficina.xlsm
@@ -183,7 +186,7 @@ Sistema_Oficina.xlsm
 
 2. Habilitar macros no Excel
 
-3. Utilizar os módulos e funcionalidades implementadas
+3. Utilizar as funcionalidades implementadas
 
 ---
 
@@ -195,6 +198,7 @@ Este projeto envolveu:
 * Simulação de banco relacional
 * Organização modular em VBA
 * Validação e sanitização de dados
+* Implementação de regras de negócio
 * Estruturação de CRUD
 * Versionamento com Git/GitHub
 
@@ -206,14 +210,12 @@ Este projeto envolveu:
 * Impressão de ordem de serviço
 * Relatórios automáticos
 * Dashboard gerencial
-* Validação avançada de CPF/CNPJ
-* Controle de estoque de peças
 
 ---
 
 ## 👨‍💻 Autor
 
-Carlos Adrians
+Carlos Adrians  
 Estudante de Sistemas de Informação
 
 ---
