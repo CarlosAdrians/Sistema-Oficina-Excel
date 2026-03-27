@@ -281,3 +281,45 @@ End Function
 Function CalcularTotalItem(qtd As Double, valorUnit As Double) As Double
     CalcularTotalItem = qtd * valorUnit
 End Function
+
+
+'Pagamento
+
+Function ValidarForma(forma As String) As Boolean
+    Select Case Trim(forma)
+        Case "Dinheiro", "Pix", "Débito", "Crédito"
+            ValidarForma = True
+        Case Else
+            ValidarForma = False
+    End Select
+End Function
+
+
+Function ValidarAdiantamento(adiantamento As Double, total As Double) As Boolean
+    ValidarAdiantamento = (adiantamento >= 0 And adiantamento <= total)
+End Function
+
+
+Function ValidarParcelas(parcelas As Integer, forma As String) As Boolean
+    If Trim(forma) = "Crédito" Then
+        ValidarParcelas = (parcelas >= 1)
+    Else
+        ValidarParcelas = True
+    End If
+End Function
+
+
+Function CalcularRestante(total As Double, adiantamento As Double) As Double
+    CalcularRestante = total - adiantamento
+End Function
+
+
+Function CalcularStatusPagamento(adiantamento As Double, total As Double) As String
+    If adiantamento = 0 Then
+        CalcularStatusPagamento = "Pendente"
+    ElseIf adiantamento = total Then
+        CalcularStatusPagamento = "Quitado"
+    Else
+        CalcularStatusPagamento = "Parcial"
+    End If
+End Function
